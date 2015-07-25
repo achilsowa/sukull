@@ -1,0 +1,36 @@
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-user modal-icon"></i>
+            </div>
+            <form name="form" ng-submit="submit()">
+                <div class="modal-body">
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Name </span>
+                        <input ng-model="student.name" type="text" placeholder="Student's name" class="form-control" required>
+                    </div>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Email </span>
+                        <input ng-model="student.email" type="email" placeholder="Student's email ( for notification)" class="form-control">
+                    </div>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Sexe</span>
+                        <select ng-model="student.sexe" class="form-control">
+                            <option value>Important for statistics</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span ng-show="error" class="alert-danger pull-left">{{error}}</span>
+                    <button type="button" class="btn btn-sm btn-white" data-dismiss="modal">Close</button>
+                    <button ng-disabled="form.$invalid || working" ng-click="submit()" type="button"  class="btn btn-sm btn-primary">
+                        <img ng-show="working" src="imgs/loader-white5.gif">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>

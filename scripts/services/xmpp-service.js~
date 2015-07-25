@@ -1,0 +1,8 @@
+/**
+ * Created by tchapda gabi on 12/06/2015.
+ */
+
+sukuApp.factory('XmppService', ['$q', function ($q){
+
+    return Strophe; 
+}]);

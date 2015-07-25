@@ -1,0 +1,34 @@
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-edit modal-icon"></i>
+            </div>
+            <form name="form" ng-submit="submit()">
+                <div class="modal-body">
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Subject</span>
+                        <input ng-model="test.subject" type="text" placeholder="Test subject" class="form-control">
+                    </div>
+
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Code</span>
+                        <input ng-model="test.code" type="text" placeholder="Test code" class="form-control" required>
+                    </div>
+
+                    <div class="input-group m-b">
+                        <span class="input-group-addon">Date</span>
+                        <input ng-model="test.date" datepicker type="text" placeholder="Test date" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span ng-show="error" class="alert-danger pull-left">{{error}}</span>
+                    <button type="button" class="btn btn-sm btn-white" data-dismiss="modal">Close</button>
+                    <button ng-disabled="form.$invalid || working" ng-click="submit()" type="button"  class="btn btn-sm btn-primary">
+                        <img ng-show="working" src="imgs/loader-white5.gif">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>

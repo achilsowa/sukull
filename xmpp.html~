@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SukuApp</title>
+
+</head>
+<body ng-app="sukuApp" ng-controller="MainCtrl as mainCtrl">
+
+
+<script src="scripts/controllers/main-ctrl.js"></script>
+</body>
+
+</html>
+
+
+

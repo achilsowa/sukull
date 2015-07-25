@@ -1,0 +1,275 @@
+body{
+    overflow: visible;
+    background: #fff;
+    font-family: sans-serif;
+}
+
+#page-wrapper {
+    padding: 0 15px;
+    position: relative !important;
+}
+@media (min-width: 768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 220px;
+    }
+}
+
+.top-header{
+    background-color: #245269;
+    background-color: #fff;
+    /*background: url("patterns/header-profile-skin-1.png");*/
+    box-shadow: 0px 2px 4px #ddd;
+    border:none;
+}
+.page-heading{
+    line-height: 50px;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-shadow: 0px 2px 4px #ddd;
+}
+
+.main-window>[grid-view]{
+    height: 545px;
+    max-height: 100%;
+    /*max-height: 555px;*/
+    overflow: auto;
+    padding: 10px;
+}
+
+[grid-view] .grid-item:hover .icon{
+    background:#f8f8ff;
+}
+[grid-view] .grid-item.selected .icon{
+    background: #f4f4ff;
+}
+/*
+[grid-view] .file .file-name{
+    overflow: auto;
+    display: inline-block;
+    width: 70% ;
+}*/
+
+.main-window .ibox-content{
+    padding:10px 0px 10px 1px;
+    background: #fff;
+    border-top:0px;
+}
+
+tbody tr {
+    border-top:none;
+    border-bottom:1px solid #ddd;
+}
+[table-view] tbody tr:hover {
+    background: #f8f8ff;
+}
+[table-view] tbody tr.selected {
+    background: #f5f5ff;
+}
+
+.main-window>[table-view]{
+    background: #fff;
+}
+
+.main-window>[table-view] table{
+    display: inherit;
+}
+.main-window>[table-view] table tbody{
+    height: 450px;
+    overflow: auto;
+    display: inherit;
+}
+
+[table-view] .table>thead>tr>th {
+    border:none;
+    border-bottom: 1px solid #eee;
+}
+[table-view] table tbody tr td:not(first-child), [table-view] table thead tr th:not(first-child),
+[table-view] table tbody tr td:not(lasst-child), [table-view] table thead tr th:not(lasst-child){
+    min-width: 200px;
+    width:100%;
+}
+
+[table-view] table tbody tr td:first-child, [table-view] table thead tr th:first-child,
+[table-view] table tbody tr td:last-child, [table-view] table thead tr th:last-child{
+    width:10px;
+    max-width: 20px;
+}
+
+.nav-header{
+    background:none;
+    background: url("patterns/header-profile-skin-1.png");
+    padding: 10px;
+}
+
+#side-menu {
+    background: #fff;
+    box-shadow: 2px 0px 2px #ccc;
+    border:none;
+    height: 655px;
+    /*background: #f4f4f4;*/
+}
+
+#side-menu.nav>li>a:hover{
+    background: #f4f4f4;
+    color:#555;
+}
+
+#side-menu.nav>li>a{
+    padding: 15px;
+    font-weight: normal;
+    color:#777;
+}
+
+/*
+.main-window>div{
+    display: none;
+}
+
+.main-window>div.active{
+    display: block;
+}
+*/
+.profile-element{
+    padding:10px;
+}
+.file {
+    margin-right:0px;
+    margin-left:20px;
+}
+
+.input-group-addon:first-child{
+    min-width: 100px;
+    overflow: hidden;
+}
+
+.navbar-static-top, .navbar-static-side {
+    z-index: 20;
+    z-index: 20;
+}
+@media (min-width: 768px) {
+    .navbar-static-side{
+        z-index: 20;
+    }
+}
+.modal {
+    z-index: 25;
+}
+/****************************webkit-scrollbar**********************/
+::-webkit-scrollbar
+{
+    width:10px;
+    height:10px;
+}
+
+::-webkit-scrollbar:hover
+{
+    border:1px solid #ccc;
+}
+::-webkit-scrollbar-track
+{
+    background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb
+{
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+/************************end webkit-scrollbar ***************************/
+
+
+
+/***********************excel-view*****************************/
+.excel-tab tr
+{
+    height:30px;
+}
+
+.excel-tab thead tr, .excel-tab thead tr th
+{
+    height:35px;
+    background:#fff;
+    background:#f4f4f4;
+    border-top:none;
+    border-top:1px solid #ccc;
+}
+
+.excel-tab tbody tr th
+{
+    height:30px;
+    background:#fff;
+    background:#f4f4f4;
+
+}
+
+.excel-tab table.htCore, .handsontable .handsontable table
+{
+    box-shadow:0px 0px 0px 0px #fff;
+}
+
+
+.excel-tab .ht_clone_top table.htCore
+{
+    width:100%;
+    width:auto;
+}
+.excel-tab .ht_master thead
+{
+    position:relative;
+}
+.excel-tab .ht_clone_left .htCore tbody tr th
+{
+    width:100px;
+    width:auto;
+}
+
+
+.excel-view>.top-menu {
+    padding:2px;
+    /*position:fixed;
+    top:90px;*/
+    z-index:999;
+    width:100%;
+    background:#fff;
+    border-bottom:1px solid #ccc;
+}
+.test-view .excel-view>.top-menu {
+    /*top:150px;*/
+}
+
+.excel-view>.excel-tab {
+/*    position:relative;
+    top:40px;*/
+
+}
+.test-view .excel-view>.excel-tab {
+    top:30px;
+}
+.excel-view .top-menu button.btn-default {
+    border:none;
+
+}
+
+.excel-view .top-menu ul {
+    min-width:200px;
+    font-size:13px;
+}
+.excel-view .top-menu ul .shortcut{
+    color:#aaa;
+    font-size:12px;
+}
+
+.excel-tab thead th:not(:first-child), .excel-tab tbody td{
+    min-width:100px;
+}
+
+
+tbody tr.multi-area td, #content thead th.multi-area td,
+tbody tr td.col-area, #content tbody tr td.cell-area
+{
+    background:#eef4ff;
+}
+
+/*********************************end-excel-view*********************/

@@ -1,0 +1,37 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+
+sukuApp.controller('SKTestCtrl', ['TestModel', 'MarksTestModelFactory', 'ClassroomModel', 'StudentsClassroomModelFactory', '$routeParams',
+    function( TestModel, MarksTestModelFactory, ClassroomModel, StudentsClassroomModelFactory, $routeParams) {
+        var self = this;
+
+        self.id = $routeParams.id;
+        self.MarksModel = MarksTestModelFactory.create(self.id);
+        var test = TestModel.find(self.id);
+        if (!test){
+            console.log($routeParams.id + ' does not exist');
+            $location.path('/');
+            return;
+        }
+        var classroom = test.classroom;
+        classroom = ClassroomModel.find_by_sid(classroom.sid);
+        self.StudentsModel = StudentsClassroomModelFactory.create(classroom.id);
+
+        self.StudentsModel.each(function (std) {
+            var mark = self.MarksModel.stdids[std.sid];
+            if (!mark)
+                mark = new self.MarksModel({student_id: std.sid, value: 0});
+
+            mark.psave();
+        });
+
+        self.headers = [
+            {name:'name', model:self.StudentsModel},
+            {name:'sexe', index:'sexe_code', model:self.StudentsModel},
+            {name:test.code, index:'value', model:self.MarksModel},
+            {name:'appreciation', formula: 'mgp(c1)'},
+            {name:'result', formula: 'success_fail(c1)'},
+            {name:'sexe-result', formula:'sexe_mark(b1, c1)'}
+        ];
+}]);

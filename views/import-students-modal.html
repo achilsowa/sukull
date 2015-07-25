@@ -1,0 +1,35 @@
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <i class="fa fa-cloud-upload modal-icon"></i>
+        </div>
+        <form name="form" ng-submit="submit()">
+            <div class="modal-body">
+                <div class="notes">
+                    {{strs['You must import the students from a text file (.txt or .text)'] | tr }}.
+                    <br/>
+                    {{strs['Each line in the file must contain the name of one student'] | tr }}.
+                    <br/>
+                    {{strs['If your student file is not a text file (pdf, excel, word, ...)'] | tr }},<br/>
+                    {{strs['open your text editor (notepad, bloc note, emacs ...)'] | tr }}, <br/>
+                    {{strs['copy the students\' names in that file, each name on it\'s own line and save the file with the extension .txt or .text'] | tr }}. <br/>
+                    {{strs['Then import it via this assistant'] | tr }}.<br/>
+                    {{strs['The other students\' information (email, phone ...) must be filled later'] | tr }}.<br/>
+                    {{strs['The imported students will be added to students already present in the classroom before'] | tr }}.
+                </div>
+                <br/>
+                <div file-input paths="paths"></div>
+            </div>
+            <div class="modal-footer">
+                <span ng-show="error" class="alert-danger pull-left">{{error | tr}}</span>
+                <button type="button" class="btn btn-sm btn-white" data-dismiss="modal">{{strs['Close'] | tr }}</button>
+                <button ng-disabled="form.$invalid || working || !paths.length" ng-click="submit()" type="button"
+                        class="btn btn-sm btn-primary">
+                    <img ng-show="working" src="imgs/loader-white5.gif">
+                    {{strs['Send'] | tr }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

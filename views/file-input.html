@@ -1,0 +1,10 @@
+<div class="form-group">
+    <div class="input-group"> <input type="file" style="display:none;" name="file" class="form-control" /> </div>
+    <div class="add-file">
+        <button class="btn btn-primary btn-xs" what="upload-file" ng-disabled="loading" type="button">
+            <img ng-show="loading" src="imgs/loader-white5.gif" /> <i class="fa fa-cloud-upload"></i>  {{strs['Upload the text file'] | tr}}
+        </button>
+    </div>
+    <br/>
+    <span ng-show="error" class="alert-danger">{{error}}</span>
+</div>

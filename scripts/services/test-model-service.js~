@@ -1,0 +1,59 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+sukuApp.factory('TestModel', ['Model', 'Helper', function(Model, Helper){
+    var Test = Model.sub();
+    Test.configure('Test', //name
+        'code', 'date', 'subject', 'classroom', 'responsible',
+        'cannot_be_edited', 'selected', 'sid', 'classroom_name');
+
+    Test.extend({
+        url : function(what) {
+            if (what == 'save') return '../server/add-test';
+            if (what == 'fetch') return '../server/get-tests';
+            if (what == 'destroy') return '../server/del-test';
+            if (what == 'fetch_one') return '../server/get-test';
+        },
+
+        sids : [],
+
+        is_ssa : function (attr) { //ssa == server side attribute
+            return (attr == 'code' || attr == 'subject' || attr == 'date' || attr == 'classroom');
+        },
+
+        Name : 'tests',
+	mustHaveNode: true
+    });
+
+    Test.include({
+        validate: function() {
+            if (!(this.code && this.classroom.sid))
+                return 'code and classroom are required to save the test';
+            if (this.id && this.cannot_be_edited)
+                return 'No rights to edit this on the server. Contact the '+
+                'owner of the classroom for any modification';
+
+            this.code = Helper.present(this.code);
+            this.subject = Helper.present(this.subject);
+            this.classroom_name = Helper.present(this.classroom.name);
+
+            if (!this.responsible) this.responsible = 'stanley';//Gab.user.name;
+            this.responsible = Helper.present(this.responsible);
+
+            if (this.id){
+                var sid = this.constructor.find(this.id).sid;
+                if (this.constructor.sids[sid])
+                    this.cannot_be_edited =
+                        this.constructor.sids[sid].cannot_be_edited;
+
+                if (this.cannot_be_edited)
+                    return 'No rights to edit this on the server contact  '+
+                    this.responsible+' for any modification ';
+
+                this.constructor.sids[sid] = this;
+            } else
+                this.constructor.sids[this.sid] = this;
+        }
+    });
+    return Test;
+}]);

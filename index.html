@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <base href="/suku/app/" />
+    <meta charset="UTF-8">
+    <title>SUKULL</title>
+    <link rel="stylesheet" href="styles/bootstrap.min.css" type="text/css">
+    <link href="styles/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="styles/mdi/css/materialdesignicons.css" rel="stylesheet">
+    <link href="styles/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="styles/handsontable.full.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/index.css" type="text/css">
+</head>
+<body ng-app="sukuApp" ng-controller="MainCtrl as mainCtrl">
+
+
+<header>
+    <i class="fa fa-pencil header-icon"></i> <img src="imgs/sukull.png" height="25">
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-sm" >
+            <i class="fa fa-university"></i> <strong class="font-bold" ng-bind="mainCtrl.strs['Classrooms'] | tr"> </strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a href="classrooms"> <i class="fa fa-university"></i> {{mainCtrl.strs['All classrooms'] | tr}}</a></li>
+	    <li ng-show="mainCtrl.classrooms.length" class="divider"></li>
+            <li ng-repeat="classroom in mainCtrl.classrooms">
+                <a ng-href="classrooms/{{classroom.sid}}">
+                    <i class="fa fa-university"></i>
+                    {{classroom.name}}
+                    <span ng-show="classroom.school">, [{{classroom.school}}]</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-sm" >
+            <i class="fa fa-edit"></i> <strong class="font-bold" ng-bind="mainCtrl.strs['Tests'] | tr"> </strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a href="tests"><i class="fa fa-edit"></i> {{mainCtrl.strs['All tests'] | tr}}</a></li>
+	    <li ng-show="mainCtrl.tests.length" class="divider"></li>
+            <li ng-repeat="test in mainCtrl.tests">
+                <a ng-href="tests/{{test.sid}}">
+                    <i class="fa fa-edit"></i>
+                    {{test.code}}
+                    <span ng-show="test.classroom.name">, [{{test.classroom.name}}]</span></a>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-sm" >
+            <i class="fa fa-users"></i> <strong class="font-bold" ng-bind="mainCtrl.strs['Colleagues'] | tr"> </strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a ng-click="mainCtrl.invite()"><i class="fa fa-user-plus"></i> {{mainCtrl.strs['Invite a colleague on sukull'] | tr}}</a></li>
+            <li ng-show="mainCtrl.colleagues.length" class="divider"></li>
+            <li ng-repeat="colleague in mainCtrl.colleagues">
+                <span><img ng-src="{{colleague.img}}"/> {{colleague.name}}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="title" style="text-align: center;">
+        <span ng-show="mainCtrl.loading"><img src="imgs/loadings.gif"> </span>
+        <strong ng-bind="mainCtrl.page.title"> </strong>
+    </div>
+
+    <div class="pull-right notifications">
+        <a ng-click="mainCtrl.showNotifications()">
+            <i class="fa fa-bell" ng-class="{newno: mainCtrl.notificationCtrl.new_notification}" style="font-size:20px;"></i>
+        </a>
+    </div>
+
+
+    <div class="dropdown pull-right">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-outline btn- btn-primary btn-sm" >
+            <img ng-src="{{mainCtrl.user.img}}" height="20"/> <strong class="font-bold" ng-bind="mainCtrl.user.name"></strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a ng-click="mainCtrl.profile()"><i class="fa fa-user"></i> {{mainCtrl.strs['Profile'] | tr}}</a></li>
+            <!--<li><a href="contacts.html"><i class="fa fa-lock"></i> Confidentiality</a></li>-->
+            <!--<li><a ng-href="settings"><i class="fa fa-cog"></i> {{mainCtrl.strs['Settings'] | tr}}</a></li>-->
+            <li class="divider"></li>
+            <li ng-click="mainCtrl.disconnect"><a href="../server/logout"><i class="fa fa-sign-out"></i> {{mainCtrl.strs['Logout'] | tr}}</a></li>
+        </ul>
+    </div>
+</header>
+<div>
+    <div id="mainbar" ng-view>
+
+    </div>
+</div>
+
+<div auth-modal class="modal inmodal" id="auth-modal" tabindex="-1" role="dialog"  aria-hidden="true"></div>
+
+<div id="conn-error-alert" class="alert alert-danger alert-dismissable conn-error-alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{mainCtrl.strs['Error'] | tr}}!!!<br/> {{mainCtrl.strs['Unable to reach the server'] | tr}}<br/>
+    {{mainCtrl.strs['All the changes made now may not be saved on the server'] | tr }}
+</div>
+
+<div id="uploading-file-alert" class="alert alert-warning uploading-file-alert" ng-show="mainCtrl.serverFileCtrl.loading">
+    <span ng-bind="mainCtrl.strs['Uploading file'] | tr"></span> <span class="percentage" ng-bind="mainCtrl.serverFileCtrl.points"> </span><br/>
+</div>
+
+<div notification-modal notifications="mainCtrl.notificationCtrl.notifications" olds="mainCtrl.notificationCtrl.olds"
+     newno="mainCtrl.notificationCtrl.new_notification"
+     class="modal inmodal" id="notification-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div invite-user-modal classrooms="mainCtrl.inviteUserCtrl.classrooms" invite="mainCtrl.inviteUserCtrl.invite(email)"
+     working="mainCtrl.inviteUserCtrl.working" error="mainCtrl.inviteUserCtrl.error"
+     class="modal inmodal" id="invite-user-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div profile-modal user="mainCtrl.profileCtrl.user" editpwd="mainCtrl.profileCtrl.editPwd(old, new1, new2)"
+     edittof="mainCtrl.profileCtrl.editTof(file, type)"
+     working="mainCtrl.profileCtrl.working" error="mainCtrl.profileCtrl.error"
+     class="modal inmodal" id="profile-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<!-- Mainly scripts -->
+<script src="scripts/vendors/jquery-2.1.1.js"></script>
+<script src="scripts/vendors/angular.js"></script>
+<script src="scripts/vendors/angular-route.js"></script>
+<script src="scripts/vendors/bootstrap.min.js"></script>
+<script src="scripts/vendors/plus.sowa.jquery.js"></script>
+<script src="scripts/vendors/jquery.upload.js"></script>
+<script src="scripts/vendors/spine.js"></script>
+<script src="scripts/vendors/datapicker/bootstrap-datepicker.js"></script>
+<script src="scripts/vendors/handsontable.full.js"></script>
+<script src="scripts/vendors/math.js"></script>
+<script src="scripts/vendors/drag-drop.min.js"></script>
+<script src="scripts/vendors/Chart.min.js"></script>
+<script src="scripts/vendors/strophe.js"></script>
+<script src="scripts/vendors/strophe.register.js"></script>
+<script src="scripts/vendors/flXHR.js"></script>
+
+<script src="scripts/app.js"></script>
+
+<script src="scripts/services/all.min.js"></script>
+<!--
+<script src="scripts/services/helper-service.js"></script>
+<script src="scripts/services/model-service.js"></script>
+<script src="scripts/services/classroom-model-service.js"></script>
+<script src="scripts/services/students-classroom-model-factory-service.js"></script>
+<script src="scripts/services/test-model-service.js"></script>
+<script src="scripts/services/marks-test-model-factory-service.js"></script>
+<script src="scripts/services/server-file-model-service.js"></script>
+<script src="scripts/services/chart-data-service.js"></script>
+<script src="scripts/services/chart-view-service.js"></script>
+<script src="scripts/services/excel-column-view-service.js"></script>
+<script src="scripts/services/excel-view-service.js"></script>
+<script src="scripts/services/model-loader-service.js"></script>
+<script src="scripts/services/auth-loader-service.js"></script>
+<script src="scripts/services/strophe-service.js"></script>
+<script src="scripts/services/register-service.js"></script>
+<script src="scripts/services/pubsub-service.js"></script>
+<script src="scripts/services/notification-service.js"></script>
+<script src="scripts/services/translate-service.js"></script>
+-->
+
+<script src="scripts/filters/all.min.js"></script>
+<!--
+<script src="scripts/filters/translate-filter.js"></script>
+<script src="scripts/filters/file-name-filter.js"></script>
+<script src="scripts/filters/file-type-filter.js"></script>
+-->
+
+<script src="scripts/interceptors/all.min.js"></script>
+<!--
+<script src="scripts/interceptors/auth-interceptor.js"></script>
+<script src="scripts/interceptors/conn-interceptor.js"></script>
+-->
+
+<script src="scripts/controllers/all.min.js"></script>
+<!--
+<script src="scripts/controllers/switch-view-ctrl.js"></script>
+<script src="scripts/controllers/save-item-ctrl.js"></script>
+<script src="scripts/controllers/import-students-ctrl.js"></script>
+<script src="scripts/controllers/share-elt-ctrl.js"></script>
+<script src="scripts/controllers/sk-classrooms-ctrl.js"></script>
+<script src="scripts/controllers/sk-classroom-ctrl.js"></script>
+<script src="scripts/controllers/sk-tests-ctrl.js"></script>
+<script src="scripts/controllers/sk-test-ctrl.js"></script>
+<script src="scripts/controllers/test-properties-ctrl.js"></script>
+<script src="scripts/controllers/classroom-properties-ctrl.js"></script>
+<script src="scripts/controllers/notification-ctrl.js"></script>
+<script src="scripts/controllers/invite-user-ctrl.js"></script>
+<script src="scripts/controllers/profile-ctrl.js"></script>
+<script src="scripts/controllers/main-ctrl.js"></script>
+-->
+
+
+<script src="scripts/directives/all.js"></script>
+
+<!--
+<script src="scripts/directives/datepicker-directive.js"></script>
+<script src="scripts/directives/fixed-height-directive.js"></script>
+<script src="scripts/directives/table-view-directive.js"></script>
+<script src="scripts/directives/grid-view-directive.js"></script>
+<script src="scripts/directives/excel-view-directive.js"></script>
+<script src="scripts/directives/chart-view-directive.js"></script>
+<script src="scripts/directives/save-classroom-modal-directive.js"></script>
+<script src="scripts/directives/share-elt-modal-directive.js"></script>
+<script src="scripts/directives/save-student-modal-directive.js"></script>
+<script src="scripts/directives/save-test-modal-directive.js"></script>
+<script src="scripts/directives/import-students-modal-directive.js"></script>
+<script src="scripts/directives/file-input-directive.js"></script>
+<script src="scripts/directives/auth-modal-directive.js"></script>
+<script src="scripts/directives/test-properties-modal-directive.js"></script>
+<script src="scripts/directives/classroom-properties-modal-directive.js"></script>
+<script src="scripts/directives/notification-modal-directive.js"></script>
+<script src="scripts/directives/invite-user-modal-directive.js"></script>
+<script src="scripts/directives/profile-modal-directive.js"></script>
+-->
+
+
+</body>
+</html>

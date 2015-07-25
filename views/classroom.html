@@ -1,0 +1,69 @@
+<div class="row wrapper border-bottom white-bg page-heading" xmlns="http://www.w3.org/1999/html">
+    <div class="functionnal-btns pull-left">
+        <span class="btn-group">
+            <span class="btn btn-sm btn-white" ng-click="classroomCtrl.new_test()"><i class="fa fa-edit"></i> New Test</span>
+            <!--<span class="btn btn-sm btn-white"><i class="fa fa-download"></i> Load Test</span>-->
+        </span>
+
+        <span class="btn-group">
+            <span class="btn btn-sm btn-white" ng-click="classroomCtrl.new_student()"><i class="fa fa-user"></i> New Student</span>
+            <span class="btn btn-sm btn-white" ng-click="classroomCtrl.import_students()"><i class="fa fa-download"></i> Import Students</span>
+        </span>
+        <span class="btn btn-sm btn-white" ng-click="classroomCtrl.share()"><i class="fa fa-share-alt"></i> Share Classroom</span>
+        <span class="btn btn-sm btn-white" ng-click="classroomCtrl.more()"><i class="fa fa-info"></i> Details</span>
+    </div>
+
+    <div class="page-title"><strong ng-bind="classroomCtrl.classroom.name"></strong>
+        <strong ng-show="classroomCtrl.classroom.school">, </strong>
+        <strong ng-show="classroomCtrl.classroom.school" ng-bind="classroomCtrl.classroom.school"> </strong>
+    </div>
+
+    <div class="non-functionnal-btns pull-right">
+        <span ng-switch="classroomCtrl.switchViewCtrl.current_tab">
+            <span ng-switch-when="0" ng-click="classroomCtrl.switchViewCtrl.next()" class="btn btn-sm btn-white btn-bitbucket">
+                <i class="fa fa-th-large"></i>
+            </span>
+            <span ng-switch-when="1" ng-click="classroomCtrl.switchViewCtrl.next()" class="btn btn-sm btn-white btn-bitbucket">
+                <i class="fa fa-list"></i>
+            </span>
+        </span>
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="main-window" ng-switch="classroomCtrl.switchViewCtrl.current_tab">
+        <div table-view ng-switch-when="0" headers="classroomCtrl.headers" items="classroomCtrl.students" icon="classroomCtrl.view_icon"
+             remove="classroomCtrl.remove_student(item)" edit="classroomCtrl.edit_student(item)" open="classroomCtrl.open_student(item)">
+        </div>
+        <div grid-view fixed-height ng-switch-when="1" headers="classroomCtrl.headers" items="classroomCtrl.students" icon="classroomCtrl.view_icon"
+             remove="classroomCtrl.remove_student(item)" edit="classroomCtrl.edit_student(item)" open="classroomCtrl.open_student(item)"></div>
+    </div>
+</div>
+
+<div save-student-modal student="classroomCtrl.saveStudentCtrl.item" save="classroomCtrl.saveStudentCtrl.save()"
+     working="classroomCtrl.saveStudentCtrl.working" error="classroomCtrl.saveStudentCtrl.error"
+     class="modal inmodal" id="save-student-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div save-test-modal test="classroomCtrl.saveTestCtrl.item" save="classroomCtrl.saveTestCtrl.save()"
+     working="classroomCtrl.saveTestCtrl.working" error="classroomCtrl.saveTestCtrl.error"
+     class="modal inmodal" id="save-test-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div import-students-modal imports="classroomCtrl.importStudentsCtrl.import_students()" paths="classroomCtrl.importStudentsCtrl.paths"
+     working="classroomCtrl.importStudentsCtrl.working" error="classroomCtrl.importStudentsCtrl.error" loading="classroomCtrl.importStudentsCtrl.loading"
+     class="modal inmodal" id="import-students-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div share-elt-modal elt="classroomCtrl.shareCtrl.elt" share="classroomCtrl.shareCtrl.share(email)"
+     working="classroomCtrl.shareCtrl.working" error="classroomCtrl.shareCtrl.error"
+     class="modal inmodal" id="share-elt-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>
+
+<div classroom-properties-modal elt="classroomCtrl.propCtrl.elt" publish="classroomCtrl.propCtrl.publish(comment)"
+     addfile="classroomCtrl.propCtrl.addFile(file)" properties="classroomCtrl.propCtrl.properties"
+      working="classroomCtrl.propCtrl.working" error="classroomCtrl.propCtrl.error" comments="classroomCtrl.propCtrl.comments"
+      olds="classroomCtrl.propCtrl.olds" files="classroomCtrl.propCtrl.files"
+     class="modal inmodal" id="classroom-properties-modal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static">
+</div>

@@ -1,0 +1,21 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+
+sukuApp.directive('saveClassroomModal', [function() {
+    return {
+        templateUrl: 'views/save-classroom-modal.html',
+        restrict:'AE',
+        link: function($scope, $element, $attrs){
+            $scope.submit = function() {
+                $scope.save($scope.classroom);
+            };
+        },
+        scope: {
+            classroom: '=',
+            working:'=',
+            error:'=',
+            save: '&'
+        }
+    };
+}]);

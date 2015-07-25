@@ -1,0 +1,81 @@
+<div class="dialog-header">
+    <h5 class="pull-left title">
+        {{strs['Chart Editor'] | tr}}
+    </h5>
+	<span class="pull-right">
+	  <a  class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom"
+          title="to save the image, do a right click on it and choose Save image as ...">
+          <i class="fa fa-picture-o"></i>
+      </a>
+
+	  <a  href="#close" class="btn btn-sm btn-default" data-toggle="tooltip"
+          data-placement="bottom" title="close">
+          <i class="fa fa-close"></i>
+      </a>
+	</span>
+</div>
+<div class="chart-left tabs-view">
+    <div class="menu-item">
+        <a href="#range" class="item active">
+            {{strs['Data range'] | tr}}
+        </a>
+        <a href="#type" class="item">
+            {{strs['Graphic type'] | tr}}
+        </a>
+    </div>
+    <div class="items">
+        <div class="item" what="type">
+            <div>
+                <h5>{{strs['Column'] | tr}}</h5>
+                <img  graph="column" src="imgs/graph/column.png" alt="column"
+                      width="90" height="60" data-toggle="tooltip"
+                      data-placement="rigth" title="Column chart"/>
+            </div>
+            <div>
+                <h5>{{strs['Line'] | tr}}</h5>
+                <img src="imgs/graph/2line100.png" alt="line"  graph="line"
+                     width="90" height="60" data-toggle="tooltip"
+                     data-placement="rigth" title="Line chart"/>
+            </div>
+            <div>
+                <h5>{{strs['Radar'] | tr}}</h5>
+                <img  graph="radar" src="imgs/graph/2radar100.png" alt="radar"
+                      width="90" height="60" data-toggle="tooltip"
+                      data-placement="rigth" title="Radar chart"/>
+            </div>
+            <div>
+                <h5>{{strs['Pie, Doughnut'] | tr}}</h5>
+                <img src="imgs/graph/pie100.png" alt="pie"  graph="pie"
+                     width="90" height="60" data-toggle="tooltip"
+                     data-placement="rigth" title="Pie chart"/>
+                <img src="imgs/graph/doughnut100.png" alt="doughnut"
+                     graph="doughnut"  width="90" height="60"
+                     data-toggle="tooltip"  data-placement="rigth"
+                     title="Doughnut chart"/>
+            </div>
+            <div>
+                <h5>{{strs['Polar-Area'] | tr}}</h5>
+                <img graph="polar-area" src="imgs/graph/polar-area100.png"
+                     alt="polar-area" width="90" height="60"
+                     data-toggle="tooltip" data-placement="rigth"
+                     title="Polar-Area chart"/>
+            </div>
+        </div>
+        <div class="item active" what="range">
+            <div class="input-group">
+                {{strs['Data range'] | tr}}:<br/>
+                <textarea name="range"></textarea>
+            </div>
+            <div class="input-group">
+                <input type="radio" name="series" value="1" id="rows" />
+                <label for="rows">{{strs['Data series in rows'] | tr}}</label><br/><br/>
+                <input type="radio" name="series" value="2" id="cols" checked="checked"/>
+                <label for="cols">{{strs['Data series in columns'] | tr}}</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart-main">
+    <div class="chart-legend"></div>
+    <canvas width="530" height="425"></canvas>
+</div>

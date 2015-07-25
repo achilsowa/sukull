@@ -1,0 +1,24 @@
+/**
+ * Created by tchapda gabi on 12/06/2015.
+ */
+
+sukuApp.factory('AuthLoaderService', ['$q', '$http', 'RegisterService', function ($q, $http, Register){
+
+    var AuthLoader = {};
+
+    AuthLoader.load = function () {
+        var self = this;
+        var response = $q.defer();
+
+        return $http.get('../server/get-user/0').then(
+            function (resp) {
+                self.user = resp.data;
+		console.log(self.user.first);
+		self.user.first = parseInt(self.user.first);
+		console.log(self.user.first);
+            }
+        );
+    };
+
+    return AuthLoader;
+}]);

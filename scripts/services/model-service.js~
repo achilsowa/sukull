@@ -1,0 +1,221 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+
+sukuApp.factory('Model', ['$q', '$http', 'PubSubService', function($q, $http, Pubsub){
+    var Model = Spine.Model;
+
+    var Passive_save = {
+        pupdate : function(options) {
+            var clone, records;
+            records = this.constructor.irecords;
+            records[this.id].load(this.attributes());
+            this.constructor.sort();
+            clone = records[this.id].clone();
+            return clone;
+        },
+
+        pcreate : function(options) {
+            var clone, record;
+            this.id || (this.id = this.cid);
+            record = this.dup(false);
+            this.constructor.addRecord(record);
+            this.constructor.sort();
+            clone = record.clone();
+            return clone;
+        },
+
+        psave : function(options) {
+            var error, record;
+            if (options == null) {
+                options = {};
+            }
+            if (options.validate !== false) {
+                error = this.validate();
+                if (error) {
+                    this.trigger('error', error);
+                    return false;
+                }
+            }
+            record = this.isNew() ?
+                this.lcreate(options) : this.lupdate(options);
+            this.stripCloneAttrs();
+            return record;
+        }
+    };
+
+    Local_save = {};
+    Local_save.lupdate = Spine.Model.prototype.update;
+    Local_save.lsave = Spine.Model.prototype.save;
+    Local_save.lcreate = Spine.Model.prototype.create;
+
+    var AbstractModel_i = {
+        to_json_str : function () {
+            var attrs = this.constructor.attributes;
+            var str = '{';
+            for(i=0; i<attrs.length; ++i) {
+                str += '"'+attrs[i]+'": "'+this[attrs[i]]+'"';
+                if (i < attrs.length -1) str += ','
+            }
+            str += '}';
+            return str;
+        },
+
+        to_http_str : function () {
+            var attrs = this.constructor.attributes;
+            var ss_attrs = [];
+            for(i=0; i<attrs.length; ++i)
+                if (this.constructor.is_ssa(attrs[i])) ss_attrs.push(attrs[i]);
+
+            var str = '';
+            for(i=0; i<ss_attrs.length; ++i) {
+                str += ss_attrs[i]+'='+this[ss_attrs[i]];
+                if (i < ss_attrs.length -1) str += '&'
+            }
+            return str;
+        }
+    };
+
+    var AbstractModel_e = {
+        find_by_sid : function (sid) {
+            if (this.sids) return this.sids[sid];
+            return this.findByAttributes('sid', sid);
+        }
+    };
+
+
+    var Server_destroy = {
+        sdestroy: function (success, error) {
+            if (this.local) return;
+            success = success || function (){};
+            error = error || function () {};
+            var url = this.constructor.url('destroy');
+            $.ajax(
+                { type: 'POST',
+                    url: (this.sid ? url+'/'+this.sid : url+'/0'),
+                    dataType:'html',
+                    success: success,
+                    error:function(xhr, status, errort){
+                        console.log({what:url,xhr:xhr,status:status,error:errort});
+                        error(xhr, status, errort);
+                    }
+                }
+            );
+        }
+
+    };
+    var Server_save = {
+        save: function () {
+            var url = this.constructor.url('save');
+            var that = this;
+            var msg = 'saving ' + (this.name || this.code || 'item');
+            var url = this.sid ? url+'/'+this.sid : url+'/0';
+            var response = $q.defer();
+            if (this.validate()){
+                console.log('lsave failed');
+                response.reject({what:1, msg:this.validate()});
+                return response.promise;
+            }
+	    var first = !this.sid;
+            $http.post(url, this).then(
+                function(server_response) {
+                    var sid = server_response.data;
+                    console.log(sid);
+                    if (sid > 0) {
+                        that.sid = sid;
+                        that.psave();
+			if (that.constructor.mustHaveNode && first) {
+			    Pubsub.createNode(that.constructor.Name+'-'+sid).then(
+				function(){ response.resolve(sid); },
+				function(){ response.reject({what:13, msg:'unable to create node'}); }
+			    );
+			}else {
+                            response.resolve(sid);
+			}
+                    }else {
+                        that.destroy();
+                        response.reject({what:2, id:sid, msg:'bad id'});
+                    }
+                },
+                function(xhr, status, error) {
+                    response.reject({what:3, x:xhr, s:status, e:error, msg:'server error'});
+                });
+            return response.promise;
+        }
+    };
+
+    var Server_fetch = {
+        isFetched: false,
+        isLoading: false,
+
+        fetch : function (forceReload) {
+            var url = this.url('fetch');
+            var that = this;
+            var response = $q.defer();
+            if (this.isLoading) {
+                response.reject({id:5, msg:'is already fetching'});
+                return response.promise;
+            }
+
+            this.isLoading = true;
+            if (this.isFetched && !forceReload) {
+                response.resolve();
+                this.isLoading = false;
+                return response.promise;
+            }
+            $http.get(url).then(
+                function(server_response) {
+                    var items = server_response.data;
+                    console.log(items);
+                    if (items == '0'){
+                        response.resolve(items);
+                        return;
+                    }
+                    for(var i=0, max = items.length; i<max; ++i){
+                        var item = new that(items[i]);
+                        item.psave();
+                    }
+                    response.resolve(items);
+                    that.isFetched = true;
+                    that.isLoading = false;
+                },
+                function(error) {
+                    that.isFetched = false;
+                    that.isLoading = false;
+                    response.reject(error);
+                });
+            return response.promise;
+        },
+
+        fetch_one : function (sid) {
+            var url = this.url('fetch_one') + '/'+sid;
+            var that = this;
+            var response = $q.defer();
+            $http.get(url).then(
+                function(item) {
+                    console.log(item);
+                    if (item == '0'){
+                        response.resolve(item);
+                        return;
+                    }
+                    item = new that(JSON.parse(item));
+                    item.lsave();
+                    response.resolve(item);
+                },
+                function(xhr, status, error) {
+                    response.reject({x:xhr, s:status, e:error});
+                });
+            return response.promise;
+        }
+    };
+
+    Model.include(AbstractModel_i);
+    Model.include(Local_save);
+    Model.include(Passive_save);
+    Model.extend(AbstractModel_e);
+    Model.extend(Server_fetch);
+    Model.include(Server_save);
+
+    return Model;
+}]);
+

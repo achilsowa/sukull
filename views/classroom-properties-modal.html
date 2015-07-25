@@ -1,0 +1,87 @@
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <i class="fa fa-info modal-icon"></i>
+        </div>
+
+            <div class="modal-body">
+                <h5>{{properties.title}}, {{properties.responsible}}</h5>
+                <div class="properties">
+                    <h5><i class="fa fa-info"></i> {{strs['Properties'] | tr}}</h5>
+                    <div class="ibox float-e-margins block details">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <small class="stats-label pull-left">{{strs['Effectif'] | tr}} (%)</small>
+                                    <small class="pull-right">{{properties.std}} (100%)</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <small class="stats-label pull-left">{{strs['Male'] | tr}} (%)</small>
+                                    <small class="pull-right">{{properties.male}} ({{properties.male_per}}%)</small>
+                                </div>
+                                <div class="col-xs-12">
+                                    <small class="stats-label pull-left">{{strs['Female'] | tr}} (%)</small>
+                                    <small class="pull-right">{{properties.female}} ({{properties.female_per}}%)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="attachments">
+                    <h5><i class="fa fa-paperclip"></i> {{strs['Attachments'] | tr}}</h5>
+                    <div ng-repeat="file in files" class="attachment">
+                        <i class="fa fa-{{file | type}}-o"></i>
+                        <div class="text"><br/><span>{{file | name}}</span><br/>
+                            <a class="download pull-right"  ng-href="../files/{{file}}"> <i class="fa fa-download"></i> {{strs['Download'] | tr }}</a>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="attach-file">
+                        <button type="button"  class="btn btn-sm btn-primary" ng-click="submitFile()">{{strs['Attach a file'] | tr}}</button>
+                        <form name="fileForm" ng-hide="true">
+                            <input type="file" name="file" class="form-control" />
+                        </form>
+                    </div>
+                </div>
+                <br/>
+                <div class="activity">
+                    <h5><i class="fa fa-comment"></i> {{strs['Activity'] | tr}}</h5>
+
+                    <div class="my-comment">
+                        <form name="form" ng-submit="submit()">
+                            <textarea ng-model="comment" placeholder="{{strs['comment'] | tr}} ..." class="form-control" required></textarea>
+                            <br/>
+                            <span ng-show="error" class="alert-danger pull-right">{{error | tr}}</span>
+                            <button ng-disabled="form.$invalid || working" ng-click="submit()" type="button"  class="btn btn-sm btn-primary">
+                                <img ng-show="working" src="imgs/loading.gif">
+                                {{strs['Comment'] | tr}}
+                            </button>
+                        </form>
+                    </div>
+                    <div class="comments">
+                        <div ng-repeat="comment in comments" class="comment">
+                            <img width="25" ng-src="{{comment.from.img}}"/>
+                            <div class="text"><span class="pseudo">{{comment.from.name}}</span><br/>
+                                {{comment.msg}}<br/>
+                                <small class="date pull-right">{{comment.date | date:'short'}}</small>
+                            </div>
+                        </div>
+
+                        <div ng-repeat="old in olds" class="comment">
+                            <img width="25" ng-src="{{old.from.img}}"/>
+                            <div class="text"><span class="pseudo">{{old.from.name}}</span><br/>
+                                {{old.msg}}<br/>
+                                <small class="date pull-right">{{old.date | date:'short'}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

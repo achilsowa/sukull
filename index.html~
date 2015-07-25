@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sukull</title>
+    <link rel="stylesheet" href="styles/bootstrap.min.css" type="text/css">
+    <link href="styles/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="styles/mdi/css/materialdesignicons.css" rel="stylesheet">
+    <link href="styles/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="styles/handsontable.full.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/index.css" type="text/css">
+</head>
+<body ng-app="sukuApp" ng-controller="MainCtrl as mainCtrl">
+
+
+<header>
+    <i class="fa fa-pencil header-icon"></i> <img src="imgs/sukull.png" height="25">
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-sm" >
+            <strong class="font-bold"><i class="fa fa-university"></i> Classrooms</strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a href="#/classrooms"> <i class="fa fa-university"></i> All classrooms</a></li>
+	    <li ng-show="mainCtrl.classrooms.length" class="divider"></li>
+            <li ng-repeat="classroom in mainCtrl.classrooms">
+                <a ng-href="#/classrooms/{{classroom.id}}">
+                    <i class="fa fa-university"></i>
+                    {{classroom.name}}
+                    <span ng-show="classroom.school">, [{{classroom.school}}]</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-sm" >
+            <strong class="font-bold"><i class="fa fa-edit"></i> Tests</strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a href="#/tests"><i class="fa fa-edit"></i> All tests</a></li>
+	    <li ng-show="mainCtrl.tests.length" class="divider"></li>
+            <li ng-repeat="test in mainCtrl.tests">
+                <a ng-href="#/tests/{{test.id}}">
+                    <i class="fa fa-edit"></i>
+                    {{test.code}}
+                    <span ng-show="test.classroom.name">, [{{test.classroom.name}}]</span></a>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-primary btn-sm" >
+            <strong class="font-bold"><i class="fa fa-users"></i> Colleagues</strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a href="#/settings"><i class="fa fa-user-plus"></i> Invite a colleague on sukullp</a></li>
+            <li ng-show="mainCtrl.colleagues.length" class="divider"></li>
+            <li ng-repeat="colleague in mainCtrl.colleagues">
+                <span><img ng-src="{{colleague.img}}"/> {{colleage.name}}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dropdown pull-right">
+        <a data-toggle="dropdown" class="dropdown-toggle" >
+            <strong class="font-bold" ng-bind="mainCtrl.user.name"></strong> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+            <li><a ng-href="users/{{mainCtrl.user.username}}/"><i class="fa fa-user"></i> Profile</a></li>
+            <!--<li><a href="contacts.html"><i class="fa fa-lock"></i> Confidentiality</a></li>-->
+            <li><a ng-href="settings/{{mainCtrl.user.name}}/"><i class="fa fa-cog"></i> Settings</a></li>
+            <li class="divider"></li>
+            <li ng-click="mainCtrl.disconnect"><a href="../server/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+        </ul>
+    </div>
+</header>
+<div>
+    <div id="mainbar" ng-view>
+
+    </div>
+</div>
+
+<div auth-modal class="modal inmodal" id="auth-modal" tabindex="-1" role="dialog"  aria-hidden="true"></div>
+
+<div id="conn-error-alert" class="alert alert-danger alert-dismissable conn-error-alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    Error!!!<br/> Unable to reach the server <br/>
+</div>
+
+<!-- Mainly scripts -->
+<script src="scripts/vendors/jquery-2.1.1.js"></script>
+<script src="scripts/vendors/angular.js"></script>
+<script src="scripts/vendors/angular-route.js"></script>
+<script src="scripts/vendors/bootstrap.min.js"></script>
+<script src="scripts/vendors/plus.sowa.jquery.js"></script>
+<script src="scripts/vendors/jquery.upload.js"></script>
+<script src="scripts/vendors/spine.js"></script>
+<script src="scripts/vendors/datapicker/bootstrap-datepicker.js"></script>
+<script src="scripts/vendors/handsontable.full.js"></script>
+<script src="scripts/vendors/math.js"></script>
+<script src="scripts/vendors/drag-drop.min.js"></script>
+<script src="scripts/vendors/Chart.min.js"></script>
+<script src="scripts/vendors/strophe.js"></script>
+<script src="scripts/vendors/strophe.register.js"></script>
+<script src="scripts/vendors/flXHR.js"></script>
+
+<script src="scripts/app.js"></script>
+
+<script src="scripts/services/helper-service.js"></script>
+<script src="scripts/services/model-service.js"></script>
+<script src="scripts/services/classroom-model-service.js"></script>
+<script src="scripts/services/students-classroom-model-factory-service.js"></script>
+<script src="scripts/services/test-model-service.js"></script>
+<script src="scripts/services/marks-test-model-factory-service.js"></script>
+<script src="scripts/services/server-file-model-service.js"></script>
+<script src="scripts/services/chart-data-service.js"></script>
+<script src="scripts/services/chart-view-service.js"></script>
+<script src="scripts/services/excel-column-view-service.js"></script>
+<script src="scripts/services/excel-view-service.js"></script>
+<script src="scripts/services/model-loader-service.js"></script>
+<script src="scripts/services/auth-loader-service.js"></script>
+<script src="scripts/services/strophe-service.js"></script>
+<script src="scripts/services/register-service.js"></script>
+<script src="scripts/services/pubsub-service.js"></script>
+
+<script src="scripts/interceptors/auth-interceptor.js"></script>
+<script src="scripts/interceptors/conn-interceptor.js"></script>
+
+<script src="scripts/controllers/main-ctrl.js"></script>
+<script src="scripts/controllers/switch-view-ctrl.js"></script>
+<script src="scripts/controllers/save-item-ctrl.js"></script>
+<script src="scripts/controllers/import-students-ctrl.js"></script>
+<script src="scripts/controllers/sk-classrooms-ctrl.js"></script>
+<script src="scripts/controllers/sk-classroom-ctrl.js"></script>
+<script src="scripts/controllers/sk-tests-ctrl.js"></script>
+<script src="scripts/controllers/sk-test-ctrl.js"></script>
+
+<script src="scripts/directives/datepicker-directive.js"></script>
+<script src="scripts/directives/fixed-height-directive.js"></script>
+<script src="scripts/directives/table-view-directive.js"></script>
+<script src="scripts/directives/grid-view-directive.js"></script>
+<script src="scripts/directives/excel-view-directive.js"></script>
+<script src="scripts/directives/chart-view-directive.js"></script>
+<script src="scripts/directives/save-classroom-modal-directive.js"></script>
+<script src="scripts/directives/save-student-modal-directive.js"></script>
+<script src="scripts/directives/save-test-modal-directive.js"></script>
+<script src="scripts/directives/import-students-modal-directive.js"></script>
+<script src="scripts/directives/file-input-directive.js"></script>
+<script src="scripts/directives/auth-modal-directive.js"></script>
+
+
+</body>
+</html>

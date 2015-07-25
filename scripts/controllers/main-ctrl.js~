@@ -1,0 +1,30 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+
+sukuApp.controller('MainCtrl', ['AuthLoaderService', 'ModelLoaderService', 'ClassroomModel', 'TestModel', 'PubSubService', function (AuthLoader, ModelLoader, Classrooms, Tests) {
+    var self = this;
+    self.classrooms = Classrooms.records;
+    self.tests = Tests.records;
+    self.user = AuthLoader.user;
+    self.disconnect = function (){
+	console.log('disconnect');
+	AuthLoader.disconnect;
+	$.ajax({
+	    type:'get',
+	    url: '../server/logout',
+	    async:false
+	});
+    };
+
+    AuthLoader.load().then(
+	function(){
+            console.log(AuthLoader.user);
+            self.user = AuthLoader.user;
+            return ModelLoader.load();
+	},
+	function (error){
+	    alert(error.msg+' Error while loading user\'s data. Unable to start the application correctly ');
+	});
+}]);
+

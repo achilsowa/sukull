@@ -1,0 +1,12 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="functionnal-btns pull-left">
+        <span class="btn btn-sm btn-white" ng-click="testCtrl.notify_students()"><i class="fa fa-send"></i> Notify Students</span>
+        <span class="btn btn-sm btn-white" ng-click="testCtrl.share_test()"><i class="fa fa-share-alt"></i> Share Test</span>
+        <span class="btn btn-sm btn-white" ng-click="testCtrl.properties()"><i class="fa fa-info"></i> Details</span>
+    </div>
+</div>
+<div class="row">
+    <div class="main-window">
+        <div excel-view  headers="testCtrl.headers" model="testCtrl.StudentsModel" view-id="test-view-{{testCtrl.id}}"> </div>
+    </div>
+</div>

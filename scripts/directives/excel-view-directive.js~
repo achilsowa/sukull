@@ -1,0 +1,22 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+
+sukuApp.directive('excelView', ['ExcelViewService', function(ExcelView) {
+    return {
+        templateUrl: 'views/excel-view.html',
+        restrict:'AE',
+        scope: {
+            headers: '=',
+            viewId:'@',
+            model:'='
+        },
+
+        controller: function($scope, $element, $attrs) {
+            $element.attr('id', $scope.viewId);
+            var view = new ExcelView({el: $element, headers:$scope.headers});
+            view.setModel($scope.model);
+            this.view = view;
+        }
+    };
+}]);

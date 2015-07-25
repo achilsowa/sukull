@@ -1,0 +1,65 @@
+<div class="modal-dialog modal-sm" xmlns="http://www.w3.org/1999/html">
+    <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <img src="imgs/sukull.png" height="20"/>
+        </div>
+
+        <div class="ibox float-e-margins modal-body">
+            <div ng-hide="more">
+                <div class="ibox-content no-padding border-left-right" style="text-align:center;">
+                    <h4><strong>{{user.name}}</strong></h4>
+                    <img alt="image" ng-src="{{user.img}}" width="150">
+                    <div>
+                        <a ng-click="submitTof()" ng-show="user.me"><small>{{strs['Edit picture'] | tr }}</small></a>
+                        <form name="tofForm" ng-hide="true">
+                            <input type="file" name="file" class="form-control" />
+                        </form>
+                    </div>
+                </div>
+                <br/>
+                <div class="ibox-content profile-content">
+                    <p><small>{{strs['username'] | tr }} </small>: <a >@{{user.username}}</a></p>
+                    <p><small>{{strs['Member since'] | tr }} </small>{{user.creation | date:'short'}} </p>
+
+
+                    <p ng-show="user.schools.length">
+                        <small>{{strs['Teacher at'] | tr }} </small>:
+                        <span ng-repeat="school in user.schools">
+                            {{school}} <span ng-show="$index != $last-1">,</span>
+                        </span>
+                    </p>
+
+                </div>
+            </div>
+
+            <a ng-click="toggleEdit()" ng-show="user.me"><small>{{strs['Edit or Profile'] | tr }} <i class="fa" ng-class="{'fa-caret-right':!more, 'fa-caret-left':more}"></i> </small></a>
+            <form name="form" ng-submit="submit()" ng-show="user.me && more">
+                <div>
+                    <div class="input-group m-b" style="width:100%;">
+                        <input ng-model="oldpwd" type="password" placeholder="{{strs['old password'] | tr}}" class="form-control" required>
+                    </div>
+                    <div class="input-group m-b" style="width:100%;">
+                        <input ng-model="newpwd" type="password" placeholder="{{strs['new password'] | tr}}" class="form-control" required>
+                    </div>
+                    <div class="input-group m-b" style="width:100%;">
+                        <input ng-model="newpwd2" type="password" placeholder="{{strs['new password again'] | tr}}" class="form-control" required>
+                    </div>
+                </div>
+                <span ng-show="error" class="alert-danger pull-left">{{error}}</span>
+                <button ng-disabled="form.$invalid || working" ng-click="submit()" type="button"  class="btn btn-sm btn-primary">
+                    <img ng-show="working" src="imgs/loader-white5.gif">
+                    {{strs['Save'] | tr}}
+                </button>
+            </form>
+
+
+
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-white" data-dismiss="modal">{{strs['Close'] | tr }}</button>
+        </div>
+    </div>
+</div>

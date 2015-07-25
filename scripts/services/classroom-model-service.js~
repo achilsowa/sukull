@@ -1,0 +1,54 @@
+/**
+ * Created by tchapda gabi on 28/05/2015.
+ */
+sukuApp.factory('ClassroomModel', ['Model', 'Helper', function(Model, Helper){
+    var Classroom = Model.sub();
+        Classroom.configure('Classroom', //name
+            'name', 'school', 'responsible', //functional params
+            'selected', 'cannot_be_edited', 'sid');
+
+    Classroom.extend({
+        url : function(what) {
+            if (what == 'save') return '../server/add-classroom';
+            if (what == 'fetch') return '../server/get-classrooms';
+            if (what == 'destroy') return 'del-classroom';
+            if (what == 'fetch_one') return 'get-classroom';
+        },
+
+        sids : [],
+
+        is_ssa : function (attr) { //ssa == server side attribute
+            return (attr == 'name' || attr == 'school' || attr == 'sid');
+        },
+
+        Name: 'classrooms',
+	mustHaveNode: true
+    });
+
+    Classroom.include({
+        validate: function() {
+            if (!this.name)
+                return 'the name is required to save the classroom';
+
+            this.name = Helper.present(this.name);
+            if (this.school) this.school  = Helper.present(this.school);
+            if (!this.responsible) this.responsible = 'stanley';//Gab.user.name;
+            this.responsible = Helper.present(this.responsible);
+
+            if (this.id){
+                var sid = this.constructor.find(this.id).sid;
+                if (this.constructor.sids[sid])
+                    this.cannot_be_edited =
+                        this.constructor.sids[sid].cannot_be_edited;
+
+                if (this.cannot_be_edited)
+                    return 'No rights to edit this on the server. Contact  '+
+                    this.responsible+' for any modification ';
+                if(sid) this.constructor.sids[sid] = this;
+            }
+            this.constructor.sids[this.sid] = this;
+        }
+    });
+    window.Classroom = Classroom;
+    return Classroom;
+}]);

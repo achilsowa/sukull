@@ -1,0 +1,56 @@
+<div class="top-menu">
+	<div class="dropdown" style="display:inline-block;">
+        <button class="btn btn-white btn-sm dropdown-toggle" data-toggle="dropdown" > {{strs['Edit'] | tr }}</button>
+	    <ul class="dropdown-menu animated fadeInDown" role="menu">
+	        <li role="presentation">
+                <a href="#undo">
+                    <i class="fa fa-arrow-left"></i>
+                    {{strs['Undo'] | tr }}
+                    <span class="pull-right shortcut">Ctrl + Z</span>
+	            </a>
+	        </li>
+	        <li role="presentation">
+	            <a href="#redo">
+                    <i class="fa fa-arrow-right"></i>
+                    {{strs['Redo'] | tr }}
+                    <span class="pull-right shortcut">Ctrl + Y</span></a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li role="presentation">
+                <a href="#cut">  <i class="fa fa-cut"></i> {{strs['Cut'] | tr }} <span class="pull-right shortcut">Ctrl + X</span> </a>
+	        </li>
+	        <li role="presentation">
+	            <a href="#copy">  <i class="fa fa-copy"></i> {{strs['Copy'] | tr }} <span class="pull-right shortcut">Ctrl + C</span></a>
+	        </li>
+	        <li role="presentation">
+	            <a href="#paste">  <i class="fa fa-paste"></i> {{strs['Paste'] | tr }} <span class="pull-right shortcut">Ctrl + V</span></a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li role="presentation">
+	            <a href="#remove-row">  <i class="fa fa-minus"></i> {{strs['Remove row'] | tr }}</a>
+	        </li>
+	        <li role="presentation">
+	            <a href="#remove-col">  <i class="fa fa-minus"></i> {{strs['Remove column'] | tr }}</a>
+	        </li>
+	    </ul>
+	</div>
+
+	<div class="dropdown" style="display:inline-block;">
+        <button class="btn btn-white btn-sm dropdown-toggle" data-toggle="dropdown" > {{strs['Insert'] | tr }}</button>
+        <ul class="dropdown-menu animated fadeInDown" role="menu">
+	        <li role="presentation">
+                <a  href="#add-graph"><i class="fa fa-line-chart"> </i> {{strs['Insert graphic'] | tr }}</a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li role="presentation">
+                <a href="#insert-row"><i class="fa fa-plus"> </i> {{strs['Insert row'] | tr }}</a>
+	        </li>
+	        <li role="presentation">
+	            <a  href="#insert-col"><i class="fa fa-plus"> </i> {{strs['Insert column'] | tr }}</a>
+	        </li>
+        </ul>
+    </div>
+
+</div>
+<div class="excel-tab"></div>
+<div chart-view></div>

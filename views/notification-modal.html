@@ -1,0 +1,21 @@
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <i class="fa fa-bell modal-icon" ng-class="{newno: newno}"></i>
+            <h5>{{strs['Five things you may have missed'] | tr}}</h5>
+        </div>
+            <div class="modal-body">
+                <div class="notifications comments ibox-content">
+                    <div ng-repeat="notif in notifications" class="alert notification alert-{{notif.type}}" ng-click="open(notif)" ng-alt="notif.link">
+                        <img width="20" ng-src="{{notif.from.img}}"/> <span class="pseudo">{{notif.from.name}}</span>, {{notif.msg}}<br/>
+                            <small class="date pull-right">{{notif.date | date:'short'}}</small>
+                    </div>
+                    <div ng-repeat="notif in olds" class="alert notification alert-{{notif.type}}" ng-click="open(notif)" ng-title="notif.link">
+                        <img width="20" ng-src="{{notif.from.img}}"/> <span class="pseudo">{{notif.from.name}}</span>, {{notif.msg}}<br/>
+                        <small class="date pull-right">{{notif.date | date:'short'}}</small>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

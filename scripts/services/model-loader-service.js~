@@ -1,0 +1,57 @@
+/**
+ * Created by tchapda gabi on 12/06/2015.
+ */
+
+sukuApp.factory('ModelLoaderService', ['$q', 'ClassroomModel', 'TestModel', 'StudentsClassroomModelFactory', 'MarksTestModelFactory',
+    function ($q, ClassroomModel, TestModel, StudentsClassroomModelFactory, MarksTestModelFactory){
+
+    var ModelLoader = {};
+
+    ModelLoader.load = function () {
+        console.log({f:ClassroomModel.isFetched});
+        var response = $q.defer();
+
+
+        return ClassroomModel.fetch().then(
+            function () {
+                var left = ClassroomModel.count();
+                ClassroomModel.each(function(classroom){
+                    console.log(classroom.id);
+                    var Students = StudentsClassroomModelFactory.create(classroom.id);
+                    Students.fetch().then(function (){
+                        if (--left == 0) response.resolve();
+                    }, function (){
+                        console.log('error', left);
+                        response.reject();
+                    });
+                });
+                return response.promise;
+            }
+        ).then(
+            function (){
+                TestModel.fetch().then(function () {
+                    console.log(TestModel.count());
+                    TestModel.each(function(test){
+                        console.log(test.sid);
+                        var Marks = MarksTestModelFactory.create(test.id);
+                        Marks.fetch();
+                    });
+                });
+            },
+            function (error) {
+                console.log('alerts', error);
+                if (error.id == 5) {
+                    //this request is active at this time
+                }
+                if (error.status == 400) {
+                    //login pb
+                }
+
+                response.reject(error);
+                return response.promise;
+            });
+    };
+
+    return ModelLoader;
+
+}]);

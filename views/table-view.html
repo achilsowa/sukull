@@ -1,0 +1,29 @@
+<div class="ibox-content">
+        <table class="table">
+            <thead ng-click="deselect()">
+                <tr>
+                    <th></th><!--for icons-->
+                    <th ng-repeat="header in headers">{{header.name}}</th>
+                    <th></th><!--for menu-->
+                </tr>
+            </thead>
+            <tbody fixed-height>
+                <tr ng-repeat="item in items" ng-class="{selected: item.selected}" class="table-item" ng-dblclick="open_hdl(item)">
+                    <td class="icon"><img ng-show="item.img" width="15" ng-src="{{item.img}}"/><i ng-hide="item.img" class="{{icon}}"></i></td>
+                    <td ng-repeat="header in headers" ng-click="click_hdl(item)">{{item[header.index]}}</td>
+                    <td>
+                        <div class="dropdown pull-right">
+                            <a data-toggle="dropdown" class="dropdown-toggle" >
+                                <i class="fa fa-ellipsis-v" style="font-size:17px;"></i>
+                            </a>
+                            <ul class="dropdown-menu m-t-xs">
+                                <li><a ng-click="open_hdl(item)"><i class="fa fa-sign-in"></i> {{strs['Open'] | tr}}</a></li>
+                                <li><a ng-click="edit_hdl(item)"><i class="fa fa-pencil"></i> {{strs['Edit'] | tr}}</a></li>
+                                <li><a ng-click="remove_hdl(item)"><i class="fa fa-trash"></i> {{strs['Delete'] | tr}}</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>

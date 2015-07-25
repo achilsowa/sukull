@@ -1,0 +1,25 @@
+<div ng-repeat="item in items" class="grid-item file-box" ng-class="{selected: item.selected}" ng-dblclick="open_hdl(item)">
+    <div class="file">
+        <span>
+            <span class="corner"></span>
+            <div class="icon" ng-click="click_hdl(item)">
+                <img ng-show="item.img" ng-src="{{item.img}}"/>
+                <i ng-hide="item.img" class="{{icon}}"></i>
+            </div>
+            <div class="file-name">
+                <div class="dropdown pull-right">
+                    <a data-toggle="dropdown" class="dropdown-toggle" >
+                        <i class="fa fa-ellipsis-v" style="font-size:17px;"></i>
+                    </a>
+                    <ul class="dropdown-menu m-t-xs">
+                        <li><a ng-click="open_hdl(item)"><i class="fa fa-sign-in"></i> {{strs['Open'] | tr}}</a></li>
+                        <li><a ng-click="edit_hdl(item)"><i class="fa fa-pencil"></i> {{strs['Edit'] | tr}}</a></li>
+                        <li><a ng-click="remove_hdl(item)"><i class="fa fa-trash"></i> {{strs['Delete'] | tr}}</a></li>
+
+                    </ul>
+                </div>
+                <div>{{present(item[headers[0].index], 15)}}</div>
+            </div>
+        </span>
+    </div>
+</div>
